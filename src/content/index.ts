@@ -1,28 +1,23 @@
 const removeTwitterAds = () => {
-  const twitter_ads_selector = document.evaluate(
-    "//*[text()[contains(.,'Sponsorisé')]]",
-    document,
-    null,
-    XPathResult.ORDERED_NODE_SNAPSHOT_TYPE
-  )
+  // Find all span elements in the document
+  const spans = document.querySelectorAll("span");
 
-  for (var i = 0; i < twitter_ads_selector.snapshotLength; i++) {
-    const element = twitter_ads_selector.snapshotItem(i)
-    if (element) {
-      try {
-        const elmToDelete = (element as Element)?.closest(
-          `[data-testid="cellInnerDiv"], [data-testid="UserCell"], [data-testid="trend"]`
-        ) as HTMLElement
-        if (elmToDelete) {
-          elmToDelete.style.display = "none"
-          console.log("[twitter-ads-blocker-webext] removed an ad")
-        }
-      } catch (error) {}
+  // Loop through each span to find a match
+  for (let span of spans) {
+    if (span.innerHTML === "Ad") {
+      // If the innerHTML matches, find the nearest article parent
+      let parentArticle = span.closest("article");
+
+      // Check if the article has the correct data-testid attribute
+      if (parentArticle) {
+        console.log("[twitter-ads-blocker-webext] Removing ad");
+        parentArticle.style.display = "none";
+      }
     }
   }
-}
+};
 
 if (window.location.href.includes("twitter.com")) {
-  console.log("[twitter-ads-blocker-webext] Extension is running")
-  setInterval(removeTwitterAds, 10000)
+  console.log("[twitter-ads-blocker-webext] Extension is running");
+  setInterval(removeTwitterAds, 10000);
 }
