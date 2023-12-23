@@ -8,7 +8,7 @@ const removeTwitterAds = () => {
       // If the innerHTML matches, find the nearest article parent
       let parentArticle = span.closest("article");
 
-      // Check if the article has the correct data-testid attribute
+      // Kill it with invisibility
       if (parentArticle) {
         console.log("[twitter-ads-blocker-webext] Removing ad");
         parentArticle.style.display = "none";
